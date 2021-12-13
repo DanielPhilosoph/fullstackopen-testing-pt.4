@@ -1,5 +1,8 @@
 require("dotenv").config();
 const PORT = 3001;
-const MONGO_URL = `mongodb+srv://${process.env.NAME}:${process.env.PASSWORD}@cluster0.xx3io.mongodb.net/blogFSO?retryWrites=true&w=majority`;
+const MONGO_URL =
+  process.env.NODE_ENV === "test"
+    ? process.env.TEST_MONGODB_URI
+    : process.env.MONGODB_URI;
 
 module.exports = { PORT, MONGO_URL };

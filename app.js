@@ -2,6 +2,7 @@ const config = require("./utils/config");
 const express = require("express");
 const app = express();
 const cors = require("cors");
+require("express-async-errors");
 const blogRouter = require("./controllers/Blogs");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
@@ -13,6 +14,7 @@ mongoose
   .connect(config.MONGO_URL)
   .then(() => {
     logger.info("connected to MongoDB");
+    console.log("connected to MongoDB " + config.MONGO_URL);
   })
   .catch((error) => {
     logger.error("error connecting to MongoDB:", error.message);

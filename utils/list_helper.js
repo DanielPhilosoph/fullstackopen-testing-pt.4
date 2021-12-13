@@ -1,18 +1,33 @@
 const Blog = require("../models/blog");
 const lodash = require("lodash");
 
-function getAllBlogs() {
-  Blog.find({}).then((blogs) => {
-    return blogs;
-  });
+async function getAllBlogs() {
+  const blogs = await Blog.find({});
+  return blogs;
 }
 
-function addBlog(blog) {
-  const newBlog = new Blog(blog);
+async function deleteBlog(id) {
+  const blog = await Blog.findOne({ _id: id });
+  if (blog) {
+    await Blog.findOneAndDelete({ _id: id });
+    return true;
+  }
+  return false;
+}
 
-  newBlog.save().then((result) => {
-    return result;
-  });
+async function addBlog(blog) {
+  if (!blog.likes) {
+    blog.likes = 0;
+  }
+  if (!blog.title || !blog.url) {
+    console.log("Missing property");
+    return "Missing property";
+  } else {
+    const newBlog = new Blog(blog);
+
+    await newBlog.save();
+    return await getAllBlogs();
+  }
 }
 
 const dummy = (_blogs) => {
@@ -94,4 +109,5 @@ module.exports = {
   totalLikes,
   mostBlogs,
   mostLikes,
+  deleteBlog,
 };
