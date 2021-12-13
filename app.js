@@ -4,9 +4,11 @@ const app = express();
 const cors = require("cors");
 require("express-async-errors");
 const blogRouter = require("./controllers/Blogs");
+const userRouter = require("./controllers/Users");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
+const request = require("superagent");
 
 logger.info("connecting to DB - Loading.....");
 
@@ -26,6 +28,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use("/api/blogs", blogRouter);
+app.use("/api/users", userRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
