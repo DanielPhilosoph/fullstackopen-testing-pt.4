@@ -15,6 +15,25 @@ async function deleteBlog(id) {
   return false;
 }
 
+async function updateBlogById(id, likes, title, url) {
+  const blog = await Blog.findOne({ _id: id });
+  if (blog) {
+    const updatedObj = {};
+    if (likes && !isNaN(likes)) {
+      updatedObj.likes = likes;
+    }
+    if (title) {
+      updatedObj.title = title;
+    }
+    if (url) {
+      updatedObj.url = url;
+    }
+    await Blog.findOneAndUpdate({ _id: id }, updatedObj);
+    return true;
+  }
+  return false;
+}
+
 async function addBlog(blog) {
   if (!blog.likes) {
     blog.likes = 0;
@@ -110,4 +129,5 @@ module.exports = {
   mostBlogs,
   mostLikes,
   deleteBlog,
+  updateBlogById,
 };
