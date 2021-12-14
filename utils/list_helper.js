@@ -15,7 +15,7 @@ async function deleteBlog(request) {
   const blog = await Blog.findOne({ _id: id });
   if (blog && user && user._id.toString() === blog.user.toString()) {
     await Blog.findOneAndDelete({ _id: id });
-    return true;
+    return await Blog.find({});
   }
   return false;
 }

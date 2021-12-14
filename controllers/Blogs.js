@@ -25,7 +25,8 @@ router.post("/", async (request, response) => {
 });
 
 router.delete("/:id", async (request, response) => {
-  if (await deleteBlog(request)) {
+  const blogs = await deleteBlog(request);
+  if (blogs) {
     response.status(200).json({ delete: true });
   } else {
     response.status(400).send("Id does not exists");
