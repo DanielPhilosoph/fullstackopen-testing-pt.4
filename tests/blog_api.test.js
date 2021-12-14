@@ -14,37 +14,43 @@ let globalToken;
 const data = [
   {
     title: "test1",
-    authorId: mongoose.Types.ObjectId("4edd40c86762e0fb12001113"),
+    user: mongoose.Types.ObjectId("4edd40c86762e0fb12001113"),
+    author: "some dude",
     url: "url",
     likes: 7,
   },
   {
     title: "test2",
-    authorId: mongoose.Types.ObjectId("123d40c86762e0fb12000002"),
+    user: mongoose.Types.ObjectId("123d40c86762e0fb12000002"),
+    author: "some dude",
     url: "url",
     likes: 7,
   },
   {
     title: "test3",
-    authorId: mongoose.Types.ObjectId("4edd40c86762e0fb12001113"),
+    user: mongoose.Types.ObjectId("4edd40c86762e0fb12001113"),
+    author: "some dude",
     url: "url2",
     likes: 8,
   },
   {
     title: "test4",
-    authorId: mongoose.Types.ObjectId("123d40c86762e0fb12000002"),
+    user: mongoose.Types.ObjectId("123d40c86762e0fb12000002"),
+    author: "some dude",
     url: "url3",
     likes: 6,
   },
   {
     title: "test5",
-    authorId: mongoose.Types.ObjectId("123d40c86762e0fb12000002"),
+    user: mongoose.Types.ObjectId("123d40c86762e0fb12000002"),
+    author: "some dude",
     url: "url",
     likes: 7,
   },
   {
     title: "test6",
-    authorId: mongoose.Types.ObjectId("4edd40c86762e0fb12001113"),
+    user: mongoose.Types.ObjectId("4edd40c86762e0fb12001113"),
+    author: "some dude",
     url: "url",
     likes: 7,
   },
@@ -99,6 +105,7 @@ describe("/api/blogs route", () => {
   test("POST /api/blogs creates new blog", async () => {
     const newBlog = {
       title: "how to test api",
+      author: "someone else",
       url: "url",
       likes: 20,
     };
@@ -110,6 +117,7 @@ describe("/api/blogs route", () => {
 
     const newBlog2 = {
       title: "how to test api2",
+      author: "someone else",
       url: "url2",
       likes: 10,
     };

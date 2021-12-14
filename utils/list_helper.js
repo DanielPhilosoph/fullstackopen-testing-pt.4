@@ -4,7 +4,7 @@ const User = require("../models/user");
 const lodash = require("lodash");
 
 async function getAllBlogs() {
-  const blogs = await Blog.find({}).populate("authorId");
+  const blogs = await Blog.find({}).populate("user");
   return blogs;
 }
 
@@ -13,7 +13,7 @@ async function deleteBlog(request) {
   // Get user and blog
   const user = await User.findById(request.user._id);
   const blog = await Blog.findOne({ _id: id });
-  if (blog && user && user._id.toString() === blog.authorId.toString()) {
+  if (blog && user && user._id.toString() === blog.user.toString()) {
     await Blog.findOneAndDelete({ _id: id });
     return true;
   }
@@ -52,7 +52,7 @@ async function addBlog(request) {
     return "Missing property";
   } else {
     const user = await User.findById(request.user._id);
-    blog.authorId = user._id;
+    blog.user = user._id;
 
     // Add blog to blogs
     const newBlog = new Blog(blog);
