@@ -86,7 +86,7 @@ function favoriteBlog(blogs) {
     if (blog.likes > favorite.likes) {
       favorite = Object.assign({
         title: blog.title,
-        authorId: blog.authorId,
+        author: blog.author,
         likes: blog.likes,
       });
     }
@@ -99,7 +99,7 @@ function mostBlogs(blogs) {
     return undefined;
   }
   const countResults = lodash.countBy(blogs, (blog) => {
-    return blog.authorId;
+    return blog.author;
   });
 
   // Max by number of blogs
@@ -123,13 +123,13 @@ function mostLikes(blogs) {
     likes: -1,
   };
   blogs.forEach((blog) => {
-    map.set(blog.authorId, (map.get(blog.author) || 0) + blog.likes);
+    map.set(blog.author, (map.get(blog.author) || 0) + blog.likes);
   });
   blogs.forEach((blog) => {
-    if (map.get(blog.authorId) > highestLikesObj.likes) {
+    if (map.get(blog.author) > highestLikesObj.likes) {
       highestLikesObj = {
-        author: blog.authorId,
-        likes: map.get(blog.authorId),
+        author: blog.author,
+        likes: map.get(blog.author),
       };
     }
   });
