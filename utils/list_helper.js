@@ -10,10 +10,8 @@ async function getAllBlogs() {
 
 async function deleteBlog(request) {
   const id = request.params.id;
-  // Verify token
-  const decodedToken = jwt.verify(request.token, process.env.SECRET);
   // Get user and blog
-  const user = await User.findById(decodedToken.id);
+  const user = await User.findById(request.user._id);
   const blog = await Blog.findOne({ _id: id });
   if (blog && user && user._id.toString() === blog.authorId.toString()) {
     await Blog.findOneAndDelete({ _id: id });
@@ -53,8 +51,7 @@ async function addBlog(request) {
     console.log("Missing property");
     return "Missing property";
   } else {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
-    const user = await User.findById(decodedToken.id);
+    const user = await User.findById(request.user._id);
     blog.authorId = user._id;
 
     // Add blog to blogs

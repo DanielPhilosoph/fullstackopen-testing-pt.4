@@ -28,7 +28,7 @@ app.use(express.static("build"));
 app.use(express.json());
 app.use(middleware.requestLogger);
 
-app.use("/api/blogs", middleware.tokenExtractor, blogRouter);
+app.use("/api/blogs", middleware.userTokenExtractor, blogRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
 
