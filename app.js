@@ -17,7 +17,6 @@ mongoose
   .connect(config.MONGO_URL)
   .then(() => {
     logger.info("connected to MongoDB");
-    console.log("connected to MongoDB " + config.MONGO_URL);
   })
   .catch((error) => {
     logger.error("error connecting to MongoDB:", error.message);
