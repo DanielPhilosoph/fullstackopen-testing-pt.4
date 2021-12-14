@@ -8,9 +8,14 @@ async function getAllBlogs() {
   return blogs;
 }
 
-async function deleteBlog(id) {
+async function deleteBlog(request) {
+  const id = request.params.id;
+  // Verify token
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+  // Get user and blog
+  const user = await User.findById(decodedToken.id);
   const blog = await Blog.findOne({ _id: id });
-  if (blog) {
+  if (blog && user && user._id.toString() === blog.authorId.toString()) {
     await Blog.findOneAndDelete({ _id: id });
     return true;
   }
@@ -84,7 +89,7 @@ function favoriteBlog(blogs) {
     if (blog.likes > favorite.likes) {
       favorite = Object.assign({
         title: blog.title,
-        author: blog.author,
+        authorId: blog.authorId,
         likes: blog.likes,
       });
     }
@@ -97,7 +102,7 @@ function mostBlogs(blogs) {
     return undefined;
   }
   const countResults = lodash.countBy(blogs, (blog) => {
-    return blog.author;
+    return blog.authorId;
   });
 
   // Max by number of blogs
@@ -121,13 +126,13 @@ function mostLikes(blogs) {
     likes: -1,
   };
   blogs.forEach((blog) => {
-    map.set(blog.author, (map.get(blog.author) || 0) + blog.likes);
+    map.set(blog.authorId, (map.get(blog.author) || 0) + blog.likes);
   });
   blogs.forEach((blog) => {
-    if (map.get(blog.author) > highestLikesObj.likes) {
+    if (map.get(blog.authorId) > highestLikesObj.likes) {
       highestLikesObj = {
-        author: blog.author,
-        likes: map.get(blog.author),
+        author: blog.authorId,
+        likes: map.get(blog.authorId),
       };
     }
   });
