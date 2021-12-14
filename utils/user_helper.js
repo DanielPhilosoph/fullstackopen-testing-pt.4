@@ -19,6 +19,7 @@ async function addUser(user) {
       username: user.username,
       name: user.name,
       password: passwordHash,
+      blogs: [],
     });
 
     return await newUser.save();
@@ -28,7 +29,7 @@ async function addUser(user) {
 }
 
 async function getAllUsers() {
-  const users = await User.find({});
+  const users = await User.find({}).populate("blogs");
   return users;
 }
 

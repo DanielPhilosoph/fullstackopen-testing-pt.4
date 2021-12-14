@@ -1,8 +1,10 @@
 const Blog = require("../models/blog");
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 const lodash = require("lodash");
 
 async function getAllBlogs() {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("authorId");
   return blogs;
 }
 
@@ -34,17 +36,29 @@ async function updateBlogById(id, likes, title, url) {
   return false;
 }
 
-async function addBlog(blog) {
+async function addBlog(request) {
+  const blog = request.body;
+
+  // Default likes is 0
   if (!blog.likes) {
     blog.likes = 0;
   }
+
   if (!blog.title || !blog.url) {
     console.log("Missing property");
     return "Missing property";
   } else {
-    const newBlog = new Blog(blog);
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    const user = await User.findById(decodedToken.id);
+    blog.authorId = user._id;
 
+    // Add blog to blogs
+    const newBlog = new Blog(blog);
     await newBlog.save();
+
+    // Add blog to user
+    await User.updateOne({ _id: user._id }, { $push: { blogs: newBlog._id } });
+
     return await getAllBlogs();
   }
 }

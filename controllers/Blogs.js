@@ -13,10 +13,12 @@ router.get("/", async (_request, response) => {
 });
 
 router.post("/", async (request, response) => {
-  const result = await addBlog(request.body);
+  const result = await addBlog(request);
   if (typeof result === "string") {
-    console.log("string");
-    response.status(400).send(blogs);
+    if (result === "token missing or invalid") {
+      return response.status(401).send(result);
+    }
+    response.status(400).send(result);
   } else {
     response.status(201).json(result);
   }

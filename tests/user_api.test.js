@@ -58,7 +58,7 @@ describe("User api testing unit", () => {
       const newUser2 = {
         username: "not valid",
       };
-      await api.post("/api/users").send(newUser).expect(400);
+      await api.post("/api/users").send(newUser2).expect(400);
     });
   });
 });
